@@ -53,10 +53,10 @@ const TechEffects: React.FC = () => {
         </div>
 
         {/* HUD 文字指示器 */}
-        <div className="absolute top-6 left-32 text-cyan-400/60 font-mono text-[10px] tracking-wider">
+        <div className="absolute top-6 left-32 text-cyan-400/60 font-mono text-[10px] tracking-wider md:left-32 left-16">
           {getText('打开摄像头', 'SYSTEM ACTIVE', 'Kamera Aç')}
         </div>
-        <div className="absolute top-6 right-32 text-cyan-400/60 font-mono text-[10px] tracking-wider">
+        <div className="absolute top-6 right-32 text-cyan-400/60 font-mono text-[10px] tracking-wider md:right-32 right-24">
           {getText('AI识别手势将有意外惊喜', 'GESTURE TRACKING', 'AI Hareket Algılama ile Sürprizler')}
         </div>
       </div>
