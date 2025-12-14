@@ -5,6 +5,8 @@ import GestureInput from './components/GestureInput';
 import TechEffects from './components/TechEffects';
 import { AnimatePresence, motion } from 'framer-motion';
 
+// 语言上下文
+export const LanguageContext = React.createContext<'zh' | 'en' | 'tr'>('zh');
 
 // --- 梦幻光标组件 ---
 const DreamyCursor: React.FC<{ pointer: PointerCoords | null, progress: number }> = ({ pointer, progress }) => {
@@ -65,6 +67,18 @@ const BlessingForm: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [to, setTo] = useState('');
     const [from, setFrom] = useState('');
+    
+    // 获取语言状态
+    const language = useContext(LanguageContext);
+
+    // 根据语言获取文本
+    const getText = (zh: string, en: string, tr: string) => {
+        switch (language) {
+            case 'en': return en;
+            case 'tr': return tr;
+            default: return zh;
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -84,7 +98,7 @@ const BlessingForm: React.FC = () => {
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-red-500 to-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 cinzel"
             >
-                🎁 我的祝福
+                🎁 {getText('生成祝福链接', 'Generate Blessing Link', 'Kutsal Bağlantı Oluştur')}
             </button>
 
             {/* 弹窗 */}
@@ -105,19 +119,19 @@ const BlessingForm: React.FC = () => {
                             onClick={(e) => e.stopPropagation()}
                         >
                             <h2 className="text-2xl font-bold text-center mb-6 cinzel text-yellow-300">
-                                🎄 制作祝福链接 🎄
+                                🎄 {getText('制作祝福链接', 'Create Blessing Link', 'Kutsal Bağlantı Oluştur')} 🎄
                             </h2>
                             
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <label className="block text-yellow-200 mb-2 cinzel">
-                                        祝福对象 (To):
+                                        {getText('祝福对象 (To):', 'Recipient (To):', 'Alıcı (Kime):')}
                                     </label>
                                     <input
                                         type="text"
                                         value={to}
                                         onChange={(e) => setTo(e.target.value)}
-                                        placeholder="输入收祝福的人..."
+                                        placeholder={getText('输入收祝福的人...', 'Enter recipient\'s name...', 'Alıcının adını girin...')}
                                         className="w-full px-4 py-2 rounded-lg bg-black/30 border border-yellow-500/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                                         required
                                     />
@@ -125,13 +139,13 @@ const BlessingForm: React.FC = () => {
                                 
                                 <div>
                                     <label className="block text-yellow-200 mb-2 cinzel">
-                                        祝福来源 (From):
+                                        {getText('祝福来源 (From):', 'Sender (From):', 'Gönderen (Kimden):')}
                                     </label>
                                     <input
                                         type="text"
                                         value={from}
                                         onChange={(e) => setFrom(e.target.value)}
-                                        placeholder="输入送祝福的人..."
+                                        placeholder={getText('输入送祝福的人...', 'Enter sender\'s name...', 'Gönderenin adını girin...')}
                                         className="w-full px-4 py-2 rounded-lg bg-black/30 border border-yellow-500/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                                         required
                                     />
@@ -143,13 +157,13 @@ const BlessingForm: React.FC = () => {
                                         onClick={() => setIsOpen(false)}
                                         className="flex-1 py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
                                     >
-                                        取消
+                                        {getText('取消', 'Cancel', 'İptal')}
                                     </button>
                                     <button
                                         type="submit"
                                         className="flex-1 py-2 px-4 bg-gradient-to-r from-red-500 to-green-500 hover:from-red-600 hover:to-green-600 text-white rounded-lg transition-all duration-200"
                                     >
-                                        生成链接
+                                        {getText('生成链接', 'Generate Link', 'Bağlantı Oluştur')}
                                     </button>
                                 </div>
                             </form>
@@ -195,6 +209,18 @@ const AppContent: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const toParam = urlParams.get('to');
     const fromParam = urlParams.get('from');
+    
+    // 语言状态
+    const [language, setLanguage] = useState<'zh' | 'en' | 'tr'>('zh');
+    
+    // 根据语言获取文本
+    const getText = (zh: string, en: string, tr: string) => {
+        switch (language) {
+            case 'en': return en;
+            case 'tr': return tr;
+            default: return zh;
+        }
+    };
 
     useEffect(() => {
         if (selectedPhotoUrl && pointer) {
@@ -229,17 +255,39 @@ const AppContent: React.FC = () => {
                 <header className="flex justify-between items-start">
                     <div>
                         <h1 className="text-4xl md:text-6xl font-bold cinzel text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-green-200 to-amber-100 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
-                            🎄 BEAUTIFUL MEMORIES ❄️
+                            🎄 {getText('美好回忆', 'BEAUTIFUL MEMORIES', 'GÜZEL HATIRALAR')} ❄️
                         </h1>
                         <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
                             {state === 'CHAOS' ? 
                                 (toParam || fromParam ? 
-                                    `✨ DEAR FRIEND ${toParam ? ` ${toParam}` : ''} // WISHING YOU ALL THE BEST${fromParam ? ` from ${fromParam}` : ''} ✨` : 
-                                    '✨ SCATTERED MEMORIES // EXPLORE YOUR JOURNEY ✨') : 
+                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('祝你好运气', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
+                                    getText('✨ 散落的记忆 // 探索你的旅程 ✨', '✨ SCATTERED MEMORIES // EXPLORE YOUR JOURNEY ✨', '✨ DAĞILMIŞ HATIRALAR // YOLCULUĞUNU KEŞFET ✨')) : 
                                 (toParam || fromParam ? 
-                                    `🎁 HAPPY TREE${toParam ? ` to ${toParam}` : ''} // HEALTH PEACE PROSPERITY${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
-                                    '🎁 MEMORY TREE // TIMELINE OF LOVE 🎁')}
+                                    `🎁 ${getText('快乐之树', 'HAPPY TREE', 'NEŞELİ AĞAÇ')}${toParam ? ` to ${toParam}` : ''} // ${getText('健康和平繁荣', 'HEALTH PEACE PROSPERITY', 'SAĞLIK BARIŞ RefAH')}${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
+                                    getText('🎁 记忆之树 // 爱的时间线 🎁', '🎁 MEMORY TREE // TIMELINE OF LOVE 🎁', '🎁 HATIRA AĞACI // AŞK ZAMAN ÇİZELGESİ 🎁'))}
                         </p>
+                    </div>
+                    
+                    {/* 语言选择器 */}
+                    <div className="flex space-x-2">
+                        <button 
+                            onClick={() => setLanguage('zh')}
+                            className={`px-3 py-1 rounded ${language === 'zh' ? 'bg-red-500' : 'bg-gray-700'}`}
+                        >
+                            中
+                        </button>
+                        <button 
+                            onClick={() => setLanguage('en')}
+                            className={`px-3 py-1 rounded ${language === 'en' ? 'bg-red-500' : 'bg-gray-700'}`}
+                        >
+                            En
+                        </button>
+                        <button 
+                            onClick={() => setLanguage('tr')}
+                            className={`px-3 py-1 rounded ${language === 'tr' ? 'bg-red-500' : 'bg-gray-700'}`}
+                        >
+                            Tr
+                        </button>
                     </div>
                 </header>
                 
@@ -251,7 +299,7 @@ const AppContent: React.FC = () => {
                         rel="noopener noreferrer"
                         className="text-center cinzel text-lg text-blue-300 hover:text-blue-100 underline"
                     >
-                        商务合作
+                        {getText('商务合作', 'Business Cooperation', 'İş Birliği')}
                     </a>
                 </div>
             </div>
@@ -281,6 +329,8 @@ const App: React.FC = () => {
     const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
     const [panOffset, setPanOffset] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
     const [zoomOffset, setZoomOffset] = useState<number>(0);
+    // 语言状态
+    const [language, setLanguage] = useState<'zh' | 'en' | 'tr'>('zh');
 
     return (
         <TreeContext.Provider value={{
@@ -295,8 +345,10 @@ const App: React.FC = () => {
             rotationBoost, setRotationBoost,
             zoomOffset, setZoomOffset
         }}>
-            <AppContent />
-            <BlessingForm />
+            <LanguageContext.Provider value={language}>
+                <AppContent />
+                <BlessingForm />
+            </LanguageContext.Provider>
         </TreeContext.Provider>
     );
 };
