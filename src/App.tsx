@@ -246,7 +246,7 @@ const AppContent: React.FC = () => {
                 {/* 业务合作联络方式 */}
                 <div className="flex justify-center">
                     <a 
-                        href="https://github.com/hua1995116" 
+                        href="https://tech.xiuxinwenhua.com/" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-center cinzel text-lg text-blue-300 hover:text-blue-100 underline"
