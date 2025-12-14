@@ -528,6 +528,35 @@ const TreeSystem: React.FC = () => {
           lineWidth={1}
         />
       )}
+      
+      {/* 添加底部祝福文字 */}
+      <group position={[0, -8, 0]}>
+        {/* HAPPY TREE 文字 */}
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.5}
+          maxWidth={10}
+          color="#ffd700"
+          font="/fonts/Cinzel-Bold.ttf"
+          anchorX="center"
+          anchorY="middle"
+        >
+          {`HAPPY TREE${window.location.search.includes('to=') ? ' to' + new URLSearchParams(window.location.search).get('to') : ''}`}
+        </Text>
+        
+        {/* HEALTH PEACE PROSPERITY 文字 */}
+        <Text
+          position={[0, -0.7, 0]}
+          fontSize={0.3}
+          maxWidth={10}
+          color="#ffaaaa"
+          font="/fonts/Cinzel-Bold.ttf"
+          anchorX="center"
+          anchorY="middle"
+        >
+          {`HEALTH PEACE PROSPERITY${window.location.search.includes('from=') ? ' from' + new URLSearchParams(window.location.search).get('from') : ''}`}
+        </Text>
+      </group>
     </group>
   );
 };

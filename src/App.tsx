@@ -89,6 +89,11 @@ const PhotoModal: React.FC<{ url: string | null, onClose: () => void }> = ({ url
 
 const AppContent: React.FC = () => {
     const { state, setState, webcamEnabled, setWebcamEnabled, pointer, hoverProgress, selectedPhotoUrl, setSelectedPhotoUrl, clickTrigger } = useContext(TreeContext) as TreeContextType;
+    
+    // 解析URL参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const toParam = urlParams.get('to');
+    const fromParam = urlParams.get('from');
 
     useEffect(() => {
         if (selectedPhotoUrl && pointer) {
@@ -123,13 +128,30 @@ const AppContent: React.FC = () => {
                 <header className="flex justify-between items-start">
                     <div>
                         <h1 className="text-4xl md:text-6xl font-bold cinzel text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-green-200 to-amber-100 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
-                            🎄 CHRISTMAS MEMORIES ❄️
+                            🎄 BEAUTIFUL MEMORIES ❄️
                         </h1>
                         <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
-                            {state === 'CHAOS' ? '✨ SCATTERED MEMORIES // EXPLORE YOUR JOURNEY ✨' : '🎁 MEMORY TREE // TIMELINE OF LOVE 🎁'}
+                            {state === 'CHAOS' ? '✨  DEAR FRIEND  // WISHING YOU ALL THE BEST ✨' : '🎁 HAPPY TREE // HEALTH PEACE PROSPERITY 🎁'} 
                         </p>
                     </div>
                 </header>
+                
+                {/* 添加自定义祝福语 */}
+                {toParam && (
+                    <div className="flex justify-center">
+                        <div className="text-center cinzel text-2xl text-red-300/80">
+                            DEAR FRIEND <span className="text-yellow-300">{toParam}</span>
+                        </div>
+                    </div>
+                )}
+                
+                {fromParam && (
+                    <div className="flex justify-center">
+                        <div className="text-center cinzel text-xl text-green-300/80">
+                            WISHING YOU ALL THE BEST <span className="text-yellow-300">from {fromParam}</span>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* 光标层 (z-200) */}
