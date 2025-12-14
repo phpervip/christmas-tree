@@ -84,7 +84,7 @@ const BlessingForm: React.FC = () => {
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-red-500 to-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 cinzel"
             >
-                🎁 生成祝福链接
+                🎁 我的祝福
             </button>
 
             {/* 弹窗 */}
@@ -225,7 +225,7 @@ const AppContent: React.FC = () => {
             {webcamEnabled && <TechEffects />}
 
             {/* UI 层 (z-30) */}
-            <div className="absolute inset-0 z-30 pointer-events-none flex flex-col justify-between p-8">
+            <div className="absolute inset-0 z-30 flex flex-col justify-between p-8">
                 <header className="flex justify-between items-start">
                     <div>
                         <h1 className="text-4xl md:text-6xl font-bold cinzel text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-green-200 to-amber-100 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
@@ -243,15 +243,15 @@ const AppContent: React.FC = () => {
                     </div>
                 </header>
                 
-                {/* 业务合作联络方式 */}
-                <div className="flex justify-center">
+                {/* 商务合作联络方式 */}
+                <div className="flex justify-center pointer-events-auto">
                     <a 
                         href="https://tech.xiuxinwenhua.com/" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-center cinzel text-lg text-blue-300 hover:text-blue-100 underline"
                     >
-                        业务合作联络方式
+                        商务合作
                     </a>
                 </div>
             </div>
