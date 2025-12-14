@@ -105,7 +105,7 @@ const BlessingForm: React.FC = () => {
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-red-500 to-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 cinzel"
             >
-                🎁 {getText('生成祝福链接', 'Generate Blessing Link', 'Kutsal Bağlantı Oluştur')}
+                🎁 {getText('生成我的福链', 'Generate My Blessing Link', 'Kutsal Bağlantı Oluştur')}
             </button>
 
             {/* 弹窗 */}
@@ -222,9 +222,9 @@ const AppContent: React.FC = () => {
     
     // 定义支持的语言列表
     const languages = [
-        { code: 'zh', name: '中文' },
-        { code: 'en', name: 'English' },
-        { code: 'tr', name: 'Türkçe' }
+        { code: 'zh', name: '中' },
+        { code: 'en', name: 'Eng' },
+        { code: 'tr', name: 'Tr' }
     ];
     
     // 根据语言获取文本
@@ -274,11 +274,11 @@ const AppContent: React.FC = () => {
                         <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
                             {state === 'CHAOS' ? 
                                 (toParam || fromParam ? 
-                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('祝你好运气', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
-                                    getText('✨ 散落的记忆 // 探索你的旅程 ✨', '✨ SCATTERED MEMORIES // EXPLORE YOUR JOURNEY ✨', '✨ DAĞILMIŞ HATIRALAR // YOLCULUĞUNU KEŞFET ✨')) : 
+                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('最好的祝福', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
+                                    getText('✨ 亲爱的朋友 // 最好的祝福 ✨', '✨ DEAR FRIEND // WISHING YOU ALL THE BEST ✨', '✨ SEVGİLİ ARKADAŞ // SİZE EN İYİLERİNİ DİLERİM ✨')) : 
                                 (toParam || fromParam ? 
-                                    `🎁 ${getText('快乐之树', 'HAPPY TREE', 'NEŞELİ AĞAÇ')}${toParam ? ` to ${toParam}` : ''} // ${getText('健康和平繁荣', 'HEALTH PEACE PROSPERITY', 'SAĞLIK BARIŞ RefAH')}${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
-                                    getText('🎁 记忆之树 // 爱的时间线 🎁', '🎁 MEMORY TREE // TIMELINE OF LOVE 🎁', '🎁 HATIRA AĞACI // AŞK ZAMAN ÇİZELGESİ 🎁'))}
+                                    `🎁 ${getText('幸福树', 'HAPPY TREE', 'NEŞELİ AĞAÇ')}${toParam ? ` to ${toParam}` : ''} // ${getText('健康和平繁荣', 'HEALTH PEACE PROSPERITY', 'SAĞLIK BARIŞ RefAH')}${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
+                                    getText('🎁 幸福树 // 健康平安丰盛 🎁', '🎁 HAPPY TREE // HEALTH PEACE PROSPERITY 🎁', '🎁 NEŞELİ AĞAÇ // SAĞLIK BARIŞ RefAH 🎁'))}
                         </p>
                     </div>
                     
@@ -292,7 +292,7 @@ const AppContent: React.FC = () => {
                         </button>
                         
                         {/* 下拉菜单 */}
-                        <div className="absolute right-0 mt-2 w-48 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
+                        <div className="absolute right-0 mt-2 w-20 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
