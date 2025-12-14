@@ -114,7 +114,7 @@ const BlessingForm: React.FC = () => {
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-red-500 to-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 cinzel"
             >
-                🎁 {getText('生成我的福链', 'Generate My Blessing Link', 'Kutsal Bağlantı Oluştur')}
+                🎁 {getText('我的福链', 'My Blessing Link', 'Bağlantı Oluştur')}
             </button>
 
             {/* 弹窗 */}
@@ -373,7 +373,7 @@ const AppContent: React.FC = () => {
                             className="mt-6 px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 text-white text-lg rounded-full hover:from-red-600 hover:to-green-600 transition-all duration-300 transform hover:scale-105"
                             onClick={() => setShowBlessingMessage(false)}
                         >
-                            {getText('接收到', 'Received', 'Alındı')}
+                            {getText('收到', 'Received', 'Alındı')}
                         </button>
                     </div>
                 </div>
