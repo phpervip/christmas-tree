@@ -131,27 +131,16 @@ const AppContent: React.FC = () => {
                             🎄 BEAUTIFUL MEMORIES ❄️
                         </h1>
                         <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
-                            {state === 'CHAOS' ? '✨  DEAR FRIEND  // WISHING YOU ALL THE BEST ✨' : '🎁 HAPPY TREE // HEALTH PEACE PROSPERITY 🎁'} 
+                            {state === 'CHAOS' ? 
+                                (toParam || fromParam ? 
+                                    `✨ DEAR FRIEND ${toParam ? toParam : ''} // WISHING YOU ALL THE BEST${fromParam ? ` from ${fromParam}` : ''} ✨` : 
+                                    '✨ SCATTERED MEMORIES // EXPLORE YOUR JOURNEY ✨') : 
+                                (toParam || fromParam ? 
+                                    `🎁 HAPPY TREE${toParam ? ` to ${toParam}` : ''} // HEALTH PEACE PROSPERITY${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
+                                    '🎁 MEMORY TREE // TIMELINE OF LOVE 🎁')}
                         </p>
                     </div>
                 </header>
-                
-                {/* 添加自定义祝福语 */}
-                {toParam && (
-                    <div className="flex justify-center">
-                        <div className="text-center cinzel text-2xl text-red-300/80">
-                            DEAR FRIEND <span className="text-yellow-300">{toParam}</span>
-                        </div>
-                    </div>
-                )}
-                
-                {fromParam && (
-                    <div className="flex justify-center">
-                        <div className="text-center cinzel text-xl text-green-300/80">
-                            WISHING YOU ALL THE BEST <span className="text-yellow-300">from {fromParam}</span>
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* 光标层 (z-200) */}
