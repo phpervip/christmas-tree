@@ -234,7 +234,7 @@ const AppContent: React.FC = () => {
                         <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
                             {state === 'CHAOS' ? 
                                 (toParam || fromParam ? 
-                                    `✨ DEAR FRIEND ${toParam ? toParam : ''} // WISHING YOU ALL THE BEST${fromParam ? ` from ${fromParam}` : ''} ✨` : 
+                                    `✨ DEAR FRIEND ${toParam ? ` ${toParam}` : ''} // WISHING YOU ALL THE BEST${fromParam ? ` from ${fromParam}` : ''} ✨` : 
                                     '✨ SCATTERED MEMORIES // EXPLORE YOUR JOURNEY ✨') : 
                                 (toParam || fromParam ? 
                                     `🎁 HAPPY TREE${toParam ? ` to ${toParam}` : ''} // HEALTH PEACE PROSPERITY${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
