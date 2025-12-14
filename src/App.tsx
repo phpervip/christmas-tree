@@ -74,9 +74,17 @@ const BlessingForm: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [to, setTo] = useState('');
     const [from, setFrom] = useState('');
+    const [lang, setLang] = useState('zh'); // 默认语言为中文
     
     // 获取语言状态
     const { language } = useContext(LanguageContext);
+
+    // 定义支持的语言列表
+    const languages = [
+        { code: 'zh', name: '中文' },
+        { code: 'en', name: 'English' },
+        { code: 'tr', name: 'Türkçe' }
+    ];
 
     // 根据语言获取文本
     const getText = (zh: string, en: string, tr: string) => {
@@ -94,6 +102,7 @@ const BlessingForm: React.FC = () => {
             const url = new URL(window.location.href);
             url.searchParams.set('to', to.trim());
             url.searchParams.set('from', from.trim());
+            url.searchParams.set('lang', lang);
             window.location.href = url.toString();
         }
     };
@@ -158,6 +167,28 @@ const BlessingForm: React.FC = () => {
                                     />
                                 </div>
                                 
+                                <div>
+                                    <label className="block text-yellow-200 mb-2 cinzel">
+                                        {getText('语言版本:', 'Language Version:', 'Dil Sürümü:')}
+                                    </label>
+                                    <select
+                                        value={lang}
+                                        onChange={(e) => setLang(e.target.value)}
+                                        className="w-full px-4 py-2 rounded-lg bg-black/30 border border-yellow-500/50 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                                    >
+                                        {languages.map((langOption) => (
+                                            <option 
+                                                key={langOption.code} 
+                                                value={langOption.code}
+                                                className="bg-gray-800 text-white truncate"
+                                                style={{ maxWidth: '200px' }}
+                                            >
+                                                {langOption.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                
                                 <div className="flex space-x-4 pt-4">
                                     <button
                                         type="button"
@@ -202,7 +233,7 @@ const PhotoModal: React.FC<{ url: string | null, onClose: () => void }> = ({ url
             >
                 <img src={url} alt="Memory" className="max-h-[80vh] object-contain rounded shadow-inner" />
                 <div className="absolute -bottom-12 w-full text-center text-red-300/70 cinzel text-sm">
-                    ❄️ Precious Moment ❄️ Tap to close
+                    ❄️ Best Wishes ❄️ Tap to close
                 </div>
             </motion.div>
         </motion.div>
@@ -216,6 +247,9 @@ const AppContent: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const toParam = urlParams.get('to');
     const fromParam = urlParams.get('from');
+    
+    // 祝福文字显示状态
+    const [showBlessingMessage, setShowBlessingMessage] = useState(true);
     
     // 语言状态
     const { language, setLanguage } = useContext(LanguageContext);
@@ -269,7 +303,7 @@ const AppContent: React.FC = () => {
                 <header className="flex justify-between items-start">
                     <div>
                         <h1 className="text-4xl md:text-6xl font-bold cinzel text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-green-200 to-amber-100 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
-                            🎄 {getText('美好回忆', 'BEAUTIFUL MEMORIES', 'GÜZEL HATIRALAR')} ❄️
+                            🎄 {getText('祝福', 'BEAUTIFUL WISHES', 'En İçten Dileklerimle')} ❄️
                         </h1>
                         <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
                             {state === 'CHAOS' ? 
@@ -320,6 +354,30 @@ const AppContent: React.FC = () => {
                     </a>
                 </div>
             </div>
+
+            {/* 祝福消息层 */}
+            {showBlessingMessage && fromParam && (
+                <div 
+                    className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
+                    onClick={() => setShowBlessingMessage(false)}
+                >
+                    <div className="text-center cursor-pointer pointer-events-auto">
+                        <p className="text-3xl md:text-4xl cinzel text-yellow-300 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)] animate-pulse">
+                            {getText(
+                                `🎉 这是一份来自 ${fromParam} 的祝福 🎉`,
+                                `🎉 This is a blessing from ${fromParam} 🎉`,
+                                `🎉 Bu ${fromParam} tarafından gelen bir dilektir 🎉`
+                            )}
+                        </p>
+                        <button 
+                            className="mt-6 px-6 py-3 bg-gradient-to-r from-red-500 to-green-500 text-white text-xl rounded-full hover:from-red-600 hover:to-green-600 transition-all duration-300 transform hover:scale-105"
+                            onClick={() => setShowBlessingMessage(false)}
+                        >
+                            {getText('收到', 'Received', 'Alındı')}
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* 祝福生成表单 */}
             <BlessingForm />
