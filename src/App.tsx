@@ -76,7 +76,7 @@ const BlessingForm: React.FC = () => {
     const [from, setFrom] = useState('');
     
     // 获取语言状态
-    const language = useContext(LanguageContext);
+    const { language } = useContext(LanguageContext);
 
     // 根据语言获取文本
     const getText = (zh: string, en: string, tr: string) => {
