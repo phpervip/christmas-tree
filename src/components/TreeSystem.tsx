@@ -134,9 +134,10 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         setIsHighRes(true);
         console.log(`✅ Successfully loaded high resolution image: ${url}`);
         
-        // 在移动端，直接设置选中的照片URL以显示模态框
+        // 检查是否为移动设备
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
+          // 在移动端，直接显示模态框
           setSelectedPhotoUrl(url);
         } else {
           // 在桌面端，延时1秒后显示模态框
@@ -150,6 +151,11 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         console.error(`❌ Failed to load high resolution image: ${url}`, error);
       }
     );
+  };
+
+  // 检查是否为移动设备
+  const isMobileDevice = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   };
 
   return (
@@ -167,7 +173,7 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
       <mesh 
         position={[0, 0.15, 0.015]} 
         userData={{ photoId: id, photoUrl: url }}
-        onClick={(e) => loadHighResImage(e as any)}
+        onClick={loadHighResImage}
         ref={meshRef}
       >
         <planeGeometry args={[0.9, 0.9]} />
