@@ -6,7 +6,7 @@ import { shaderMaterial, Text, Line } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
 import { TreeContext, ParticleData, TreeContextType } from '../types';
 
-// ... (FoliageMaterial shader 代码保持不变) ...
+// --- Foliage Material ---
 const FoliageMaterial = shaderMaterial(
   { uTime: 0, uColor: new THREE.Color('#004225'), uColorAccent: new THREE.Color('#00fa9a'), uPixelRatio: 1 },
   ` uniform float uTime; uniform float uPixelRatio; attribute float size; varying vec3 vPosition; varying float vBlink; vec3 curl(float x, float y, float z) { float eps=1.,n1,n2,a,b;x/=eps;y/=eps;z/=eps;vec3 curl=vec3(0.);n1=sin(y+cos(z+uTime));n2=cos(x+sin(z+uTime));curl.x=n1-n2;n1=sin(z+cos(x+uTime));n2=cos(y+sin(x+uTime));curl.z=n1-n2;n1=sin(x+cos(y+uTime));n2=cos(z+sin(y+uTime));curl.z=n1-n2;return curl*0.1; } void main() { vPosition=position; vec3 distortedPosition=position+curl(position.x,position.y,position.z); vec4 mvPosition=modelViewMatrix*vec4(distortedPosition,1.0); gl_Position=projectionMatrix*mvPosition; gl_PointSize=size*uPixelRatio*(60.0/-mvPosition.z); vBlink=sin(uTime*2.0+position.y*5.0+position.x); } `,
@@ -55,62 +55,89 @@ extend({ ShimmerMaterial });
 // --- Photo Component ---
 const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: THREE.Euler; scale: number; id: string; shouldLoad: boolean; year: number }> = ({ url, position, rotation, scale, id, shouldLoad, year }) => {
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
-  const [loadStatus, setLoadStatus] = useState<'pending' | 'loading' | 'local' | 'fallback'>('pending');
+  const [loadStatus, setLoadStatus] = useState<'pending' | 'loading' | 'loaded' | 'highres'>('pending');
+  const [isHighRes, setIsHighRes] = useState(false);
 
+  // 生成缩略图URL
+  const generateThumbUrl = (originalUrl: string) => {
+    const extIndex = originalUrl.lastIndexOf('.');
+    if (extIndex === -1) return originalUrl;
+    return originalUrl.substring(0, extIndex) + '_s' + originalUrl.substring(extIndex);
+  };
 
   useEffect(() => {
     if (!shouldLoad || loadStatus !== 'pending') return;
 
     setLoadStatus('loading');
     const loader = new THREE.TextureLoader();
-
-    // 先尝试加载本地照片
+    
+    // 先加载缩略图
+    const thumbUrl = generateThumbUrl(url);
+    
     loader.load(
-      url,
+      thumbUrl,
       (tex) => {
-        // 本地照片加载成功
+        // 缩略图加载成功
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.wrapS = THREE.ClampToEdgeWrapping;
         tex.wrapT = THREE.ClampToEdgeWrapping;
         tex.needsUpdate = true;
         setTexture(tex);
-        setLoadStatus('local');
-        console.log(`✅ Successfully loaded local image: ${url}`, {
-          width: tex.image?.width,
-          height: tex.image?.height,
-          format: tex.format,
-          type: tex.type
-        });
+        setLoadStatus('loaded');
+        setIsHighRes(false);
+        console.log(`✅ Successfully loaded thumbnail: ${thumbUrl}`);
       },
-      undefined, // onProgress
+      undefined,
       (error) => {
-        // 本地照片加载失败，使用 Picsum 随机照片
-        console.warn(`⚠️ Local image not found: ${url}, loading random photo...`);
-        const seed = id.split('-')[1] || '55';
-        const fallbackUrl = `https://picsum.photos/seed/${parseInt(seed) + 100}/400/500`;
-
+        console.warn(`⚠️ Thumbnail not found: ${thumbUrl}, loading full resolution image...`);
+        // 如果缩略图加载失败，则加载原图
         loader.load(
-          fallbackUrl,
-          (fbTex) => {
-            fbTex.colorSpace = THREE.SRGBColorSpace;
-            fbTex.wrapS = THREE.ClampToEdgeWrapping;
-            fbTex.wrapT = THREE.ClampToEdgeWrapping;
-            fbTex.needsUpdate = true;
-            setTexture(fbTex);
-            setLoadStatus('fallback');
-            console.log(`✅ Loaded fallback image for ${url}`);
+          url,
+          (tex) => {
+            tex.colorSpace = THREE.SRGBColorSpace;
+            tex.wrapS = THREE.ClampToEdgeWrapping;
+            tex.wrapT = THREE.ClampToEdgeWrapping;
+            tex.needsUpdate = true;
+            setTexture(tex);
+            setLoadStatus('loaded');
+            setIsHighRes(true);
+            console.log(`✅ Loaded full resolution image: ${url}`);
           },
           undefined,
-          (fallbackError) => {
-            console.error(`❌ Failed to load both local and fallback images for ${url}`, fallbackError);
+          (fullResError) => {
+            console.error(`❌ Failed to load both thumbnail and full resolution image: ${url}`, fullResError);
           }
         );
       }
     );
   }, [url, id, shouldLoad, loadStatus]);
 
+  // 加载高清图片的函数
+  const loadHighResImage = () => {
+    if (isHighRes || loadStatus !== 'loaded') return;
+
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      url,
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.wrapS = THREE.ClampToEdgeWrapping;
+        tex.wrapT = THREE.ClampToEdgeWrapping;
+        tex.needsUpdate = true;
+        setTexture(tex);
+        setLoadStatus('highres');
+        setIsHighRes(true);
+        console.log(`✅ Successfully loaded high resolution image: ${url}`);
+      },
+      undefined,
+      (error) => {
+        console.error(`❌ Failed to load high resolution image: ${url}`, error);
+      }
+    );
+  };
+
   return (
-    <group position={position} rotation={rotation} scale={scale * 1.2}>
+    <group position={position} rotation={rotation} scale={scale * 1.2} onClick={loadHighResImage}>
       {/* 相框边框 - 白色边框 */}
       <mesh position={[0, 0, 0]} userData={{ photoId: id, photoUrl: url }}>
         <boxGeometry args={[1, 1.25, 0.02]} />
