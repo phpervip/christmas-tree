@@ -114,7 +114,7 @@ const BlessingForm: React.FC = () => {
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-red-500 to-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 cinzel"
             >
-                🎁 {getText('我的福链', 'My Blessing Link', 'Bağlantı Oluştur')}
+                🎁 {getText('我的', 'Mine', 'Ben')}
             </button>
 
             {/* 弹窗 */}
@@ -350,7 +350,7 @@ const AppContent: React.FC = () => {
                         rel="noopener noreferrer"
                         className="text-center cinzel text-lg text-blue-300 hover:text-blue-100 underline"
                     >
-                        {getText('商务合作', 'Business Cooperation', 'İş Birliği')}
+                        {getText('合作', 'Cooperation', 'İş Birliği')}
                     </a>
                 </div>
             </div>
