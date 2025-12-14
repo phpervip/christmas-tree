@@ -283,7 +283,7 @@ const AppContent: React.FC = () => {
                     </div>
                     
                     {/* 语言选择器 */}
-                    <div className="relative">
+                    <div className="relative group">
                         <button className="flex items-center space-x-1 bg-gray-800/50 backdrop-blur-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors">
                             <span>{languages.find(lang => lang.code === language)?.name || 'Language'}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -292,7 +292,7 @@ const AppContent: React.FC = () => {
                         </button>
                         
                         {/* 下拉菜单 */}
-                        <div className="absolute right-0 mt-2 w-48 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden hover:block z-50">
+                        <div className="absolute right-0 mt-2 w-48 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
