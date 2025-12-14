@@ -6,7 +6,14 @@ import TechEffects from './components/TechEffects';
 import { AnimatePresence, motion } from 'framer-motion';
 
 // 语言上下文
-export const LanguageContext = React.createContext<'zh' | 'en' | 'tr'>('zh');
+type Language = 'zh' | 'en' | 'tr';
+const LanguageContext = React.createContext<{
+  language: Language;
+  setLanguage: React.Dispatch<React.SetStateAction<Language>>;
+}>({
+  language: 'zh',
+  setLanguage: () => {},
+});
 
 // --- 梦幻光标组件 ---
 const DreamyCursor: React.FC<{ pointer: PointerCoords | null, progress: number }> = ({ pointer, progress }) => {
@@ -211,7 +218,14 @@ const AppContent: React.FC = () => {
     const fromParam = urlParams.get('from');
     
     // 语言状态
-    const [language, setLanguage] = useState<'zh' | 'en' | 'tr'>('zh');
+    const { language, setLanguage } = useContext(LanguageContext);
+    
+    // 定义支持的语言列表
+    const languages = [
+        { code: 'zh', name: '中文' },
+        { code: 'en', name: 'English' },
+        { code: 'tr', name: 'Türkçe' }
+    ];
     
     // 根据语言获取文本
     const getText = (zh: string, en: string, tr: string) => {
@@ -269,25 +283,28 @@ const AppContent: React.FC = () => {
                     </div>
                     
                     {/* 语言选择器 */}
-                    <div className="flex space-x-2">
-                        <button 
-                            onClick={() => setLanguage('zh')}
-                            className={`px-3 py-1 rounded ${language === 'zh' ? 'bg-red-500' : 'bg-gray-700'}`}
-                        >
-                            中
+                    <div className="relative">
+                        <button className="flex items-center space-x-1 bg-gray-800/50 backdrop-blur-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                            <span>{languages.find(lang => lang.code === language)?.name || 'Language'}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
                         </button>
-                        <button 
-                            onClick={() => setLanguage('en')}
-                            className={`px-3 py-1 rounded ${language === 'en' ? 'bg-red-500' : 'bg-gray-700'}`}
-                        >
-                            En
-                        </button>
-                        <button 
-                            onClick={() => setLanguage('tr')}
-                            className={`px-3 py-1 rounded ${language === 'tr' ? 'bg-red-500' : 'bg-gray-700'}`}
-                        >
-                            Tr
-                        </button>
+                        
+                        {/* 下拉菜单 */}
+                        <div className="absolute right-0 mt-2 w-48 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden hover:block z-50">
+                            {languages.map((lang) => (
+                                <button
+                                    key={lang.code}
+                                    onClick={() => setLanguage(lang.code as any)}
+                                    className={`flex items-center w-full px-4 py-2 text-left hover:bg-gray-700 ${
+                                        language === lang.code ? 'bg-gray-700 text-yellow-400' : ''
+                                    }`}
+                                >
+                                    <span className="ml-2">{lang.name}</span>
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </header>
                 
@@ -330,7 +347,7 @@ const App: React.FC = () => {
     const [panOffset, setPanOffset] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
     const [zoomOffset, setZoomOffset] = useState<number>(0);
     // 语言状态
-    const [language, setLanguage] = useState<'zh' | 'en' | 'tr'>('zh');
+    const [language, setLanguage] = useState<Language>('zh');
 
     return (
         <TreeContext.Provider value={{
@@ -345,7 +362,7 @@ const App: React.FC = () => {
             rotationBoost, setRotationBoost,
             zoomOffset, setZoomOffset
         }}>
-            <LanguageContext.Provider value={language}>
+            <LanguageContext.Provider value={{ language, setLanguage }}>
                 <AppContent />
                 <BlessingForm />
             </LanguageContext.Provider>
