@@ -346,8 +346,15 @@ const App: React.FC = () => {
     const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
     const [panOffset, setPanOffset] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
     const [zoomOffset, setZoomOffset] = useState<number>(0);
+    
+    // 从URL参数获取默认语言，默认为英文
+    const urlParams = new URLSearchParams(window.location.search);
+    const defaultLang = urlParams.get('lang') || 'en';
+    const validLanguages = ['zh', 'en', 'tr'];
+    const initialLanguage = validLanguages.includes(defaultLang) ? defaultLang : 'en';
+    
     // 语言状态
-    const [language, setLanguage] = useState<Language>('zh');
+    const [language, setLanguage] = useState<'zh' | 'en' | 'tr'>(initialLanguage as 'zh' | 'en' | 'tr');
 
     return (
         <TreeContext.Provider value={{
