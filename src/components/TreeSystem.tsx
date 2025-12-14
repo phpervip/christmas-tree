@@ -167,7 +167,7 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
       <mesh 
         position={[0, 0.15, 0.015]} 
         userData={{ photoId: id, photoUrl: url }}
-        onClick={loadHighResImage}
+        onClick={(e) => loadHighResImage(e as any)}
         ref={meshRef}
       >
         <planeGeometry args={[0.9, 0.9]} />
