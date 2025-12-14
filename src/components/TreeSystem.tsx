@@ -138,6 +138,11 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
           setSelectedPhotoUrl(url);
+        } else {
+          // 在桌面端，延时1秒后显示模态框
+          setTimeout(() => {
+            setSelectedPhotoUrl(url);
+          }, 1000);
         }
       },
       undefined,
