@@ -115,15 +115,29 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
   }, [url, id, shouldLoad, loadStatus]);
 
   // 加载高清图片的函数
-  const loadHighResImage = (event: THREE.Event) => {
+  const loadHighResImage = (event: any) => {
     console.log('点击事件触发:', { url, isHighRes, loadStatus });
     
-    // 阻止事件冒泡，避免触发全局点击处理
-    (event as any).stopPropagation();
-    
-    if (isHighRes || loadStatus !== 'loaded') {
-      console.log('条件不满足，取消加载:', { isHighRes, loadStatus });
+    // 强制加载高清图像，无论当前状态如何
+    if (isHighRes) {
+      console.log('已经是高清图像，直接显示');
+      setSelectedPhotoUrl(url);
       return;
+    }
+
+    // 如果正在加载或已经加载完成高清图像，则跳过
+    if (loadStatus === 'highres') {
+      console.log('高清图像已加载，直接显示');
+      setSelectedPhotoUrl(url);
+      return;
+    }
+
+    // 阻止事件冒泡，避免触发全局点击处理
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
+    if (event.preventDefault) {
+      event.preventDefault();
     }
 
     const loader = new THREE.TextureLoader();
@@ -143,17 +157,7 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         console.log('设备类型检测:', { isMobile, userAgent: navigator.userAgent });
         
-        if (isMobile) {
-          // 在移动端，直接显示模态框
-          console.log('移动端：立即显示大图');
-          setSelectedPhotoUrl(url);
-        } else {
-          // 在桌面端，延时1秒后显示模态框
-          console.log('桌面端：1秒后显示大图');
-          setTimeout(() => {
-            setSelectedPhotoUrl(url);
-          }, 1000);
-        }
+        setSelectedPhotoUrl(url);
       },
       undefined,
       (error) => {
@@ -186,6 +190,10 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
           console.log('照片点击事件触发');
           loadHighResImage(e);
         }}
+        onPointerDown={(e) => {
+          console.log('照片PointerDown事件触发');
+          loadHighResImage(e);
+        }}
         ref={meshRef}
       >
         <planeGeometry args={[0.9, 0.9]} />
@@ -201,7 +209,18 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         )}
       </mesh>
       {/* 扫光效果覆盖层 */}
-      <mesh position={[0, 0.15, 0.02]} scale={[0.9, 0.9, 1]}>
+      <mesh 
+        position={[0, 0.15, 0.02]} 
+        scale={[0.9, 0.9, 1]}
+        onClick={(e) => {
+          console.log('扫光层点击事件触发');
+          loadHighResImage(e);
+        }}
+        onPointerDown={(e) => {
+          console.log('扫光层PointerDown事件触发');
+          loadHighResImage(e);
+        }}
+      >
         <planeGeometry args={[1, 1]} />
         <shimmerMaterial transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>

@@ -198,7 +198,7 @@ const PhotoModal: React.FC<{ url: string | null, onClose: () => void }> = ({ url
                 exit={{ scale: 0.5, opacity: 0, y: 100 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="relative max-w-4xl max-h-full bg-white p-3 rounded shadow-[0_0_50px_rgba(255,215,0,0.3)] border-8 border-white"
-                onClick={(e) => e.stopPropagation()}
+                onClick={onClose}
             >
                 <img src={url} alt="Memory" className="max-h-[80vh] object-contain rounded shadow-inner" />
                 <div className="absolute -bottom-12 w-full text-center text-red-300/70 cinzel text-sm">
@@ -265,7 +265,7 @@ const AppContent: React.FC = () => {
             {webcamEnabled && <TechEffects />}
 
             {/* UI 层 (z-30) */}
-            <div className="absolute inset-0 z-30 flex flex-col justify-between p-8">
+            <div className="absolute inset-0 z-30 flex flex-col justify-between p-8 pointer-events-none">
                 <header className="flex justify-between items-start">
                     <div>
                         <h1 className="text-4xl md:text-6xl font-bold cinzel text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-green-200 to-amber-100 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
@@ -283,7 +283,7 @@ const AppContent: React.FC = () => {
                     </div>
                     
                     {/* 语言选择器 */}
-                    <div className="relative group">
+                    <div className="relative group pointer-events-auto">
                         <button className="flex items-center space-x-1 bg-gray-800/50 backdrop-blur-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors">
                             <span>{languages.find(lang => lang.code === language)?.name || 'Language'}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -292,7 +292,7 @@ const AppContent: React.FC = () => {
                         </button>
                         
                         {/* 下拉菜单 */}
-                        <div className="absolute right-0 mt-2 w-20 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
+                        <div className="absolute right-0 mt-2 w-20 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50 pointer-events-auto">
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
@@ -371,7 +371,6 @@ const App: React.FC = () => {
         }}>
             <LanguageContext.Provider value={{ language, setLanguage }}>
                 <AppContent />
-                <BlessingForm />
             </LanguageContext.Provider>
         </TreeContext.Provider>
     );
