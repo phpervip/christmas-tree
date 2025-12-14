@@ -370,10 +370,10 @@ const AppContent: React.FC = () => {
                             )}
                         </p>
                         <button 
-                            className="mt-6 px-6 py-3 bg-gradient-to-r from-red-500 to-green-500 text-white text-xl rounded-full hover:from-red-600 hover:to-green-600 transition-all duration-300 transform hover:scale-105"
+                            className="mt-6 px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 text-white text-lg rounded-full hover:from-red-600 hover:to-green-600 transition-all duration-300 transform hover:scale-105"
                             onClick={() => setShowBlessingMessage(false)}
                         >
-                            {getText('收到', 'Received', 'Alındı')}
+                            {getText('接收到', 'Received', 'Alındı')}
                         </button>
                     </div>
                 </div>

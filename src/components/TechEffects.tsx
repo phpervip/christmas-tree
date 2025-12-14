@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+// 定义语言类型和上下文
+type Language = 'zh' | 'en' | 'tr';
+const LanguageContext = React.createContext<{
+  language: Language;
+}>({
+  language: 'zh',
+});
 
 const TechEffects: React.FC = () => {
+  const { language } = useContext(LanguageContext);
+
+  // 根据语言获取文本
+  const getText = (zh: string, en: string, tr: string) => {
+    switch (language) {
+      case 'en': return en;
+      case 'tr': return tr;
+      default: return zh;
+    }
+  };
+
   return (
     <div className="fixed inset-0 pointer-events-none z-20">
       {/* HUD 边框 */}
@@ -35,10 +54,10 @@ const TechEffects: React.FC = () => {
 
         {/* HUD 文字指示器 */}
         <div className="absolute top-6 left-32 text-cyan-400/60 font-mono text-[10px] tracking-wider">
-          SYSTEM ACTIVE
+          {getText('打开摄像头', 'SYSTEM ACTIVE', 'Kamera Aç')}
         </div>
         <div className="absolute top-6 right-32 text-cyan-400/60 font-mono text-[10px] tracking-wider">
-          GESTURE TRACKING
+          {getText('AI识别手势将有意外惊喜', 'GESTURE TRACKING', 'AI Hareket Algılama ile Sürprizler')}
         </div>
       </div>
 
