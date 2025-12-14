@@ -60,6 +60,107 @@ const DreamyCursor: React.FC<{ pointer: PointerCoords | null, progress: number }
     );
 };
 
+// --- 祝福生成表单 ---
+const BlessingForm: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [to, setTo] = useState('');
+    const [from, setFrom] = useState('');
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (to.trim() && from.trim()) {
+            // 生成新的URL
+            const url = new URL(window.location.href);
+            url.searchParams.set('to', to.trim());
+            url.searchParams.set('from', from.trim());
+            window.location.href = url.toString();
+        }
+    };
+
+    return (
+        <>
+            {/* 按钮 */}
+            <button 
+                onClick={() => setIsOpen(true)}
+                className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-red-500 to-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 cinzel"
+            >
+                🎁 生成祝福链接
+            </button>
+
+            {/* 弹窗 */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[200] bg-black/70 flex items-center justify-center p-4"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.8, y: 20 }}
+                            className="bg-gradient-to-br from-red-900 to-green-900 p-8 rounded-xl shadow-2xl max-w-md w-full border-2 border-gold"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h2 className="text-2xl font-bold text-center mb-6 cinzel text-yellow-300">
+                                🎄 制作祝福链接 🎄
+                            </h2>
+                            
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div>
+                                    <label className="block text-yellow-200 mb-2 cinzel">
+                                        祝福对象 (To):
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={to}
+                                        onChange={(e) => setTo(e.target.value)}
+                                        placeholder="输入收祝福的人..."
+                                        className="w-full px-4 py-2 rounded-lg bg-black/30 border border-yellow-500/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                                        required
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-yellow-200 mb-2 cinzel">
+                                        祝福来源 (From):
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={from}
+                                        onChange={(e) => setFrom(e.target.value)}
+                                        placeholder="输入送祝福的人..."
+                                        className="w-full px-4 py-2 rounded-lg bg-black/30 border border-yellow-500/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                                        required
+                                    />
+                                </div>
+                                
+                                <div className="flex space-x-4 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsOpen(false)}
+                                        className="flex-1 py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
+                                    >
+                                        取消
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="flex-1 py-2 px-4 bg-gradient-to-r from-red-500 to-green-500 hover:from-red-600 hover:to-green-600 text-white rounded-lg transition-all duration-200"
+                                    >
+                                        生成链接
+                                    </button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
+};
+
 // --- 照片弹窗 ---
 const PhotoModal: React.FC<{ url: string | null, onClose: () => void }> = ({ url, onClose }) => {
     if (!url) return null;
@@ -143,6 +244,9 @@ const AppContent: React.FC = () => {
                 </header>
             </div>
 
+            {/* 祝福生成表单 */}
+            <BlessingForm />
+
             {/* 光标层 (z-200) */}
             <DreamyCursor pointer={pointer} progress={hoverProgress} />
 
@@ -180,6 +284,7 @@ const App: React.FC = () => {
             zoomOffset, setZoomOffset
         }}>
             <AppContent />
+            <BlessingForm />
         </TreeContext.Provider>
     );
 };
