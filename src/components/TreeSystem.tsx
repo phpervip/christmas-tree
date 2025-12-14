@@ -116,10 +116,15 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
 
   // 加载高清图片的函数
   const loadHighResImage = (event: THREE.Event) => {
+    console.log('点击事件触发:', { url, isHighRes, loadStatus });
+    
     // 阻止事件冒泡，避免触发全局点击处理
     (event as any).stopPropagation();
     
-    if (isHighRes || loadStatus !== 'loaded') return;
+    if (isHighRes || loadStatus !== 'loaded') {
+      console.log('条件不满足，取消加载:', { isHighRes, loadStatus });
+      return;
+    }
 
     const loader = new THREE.TextureLoader();
     loader.load(
@@ -136,11 +141,15 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         
         // 检查是否为移动设备
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        console.log('设备类型检测:', { isMobile, userAgent: navigator.userAgent });
+        
         if (isMobile) {
           // 在移动端，直接显示模态框
+          console.log('移动端：立即显示大图');
           setSelectedPhotoUrl(url);
         } else {
           // 在桌面端，延时1秒后显示模态框
+          console.log('桌面端：1秒后显示大图');
           setTimeout(() => {
             setSelectedPhotoUrl(url);
           }, 1000);
@@ -173,7 +182,10 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
       <mesh 
         position={[0, 0.15, 0.015]} 
         userData={{ photoId: id, photoUrl: url }}
-        onClick={loadHighResImage}
+        onClick={(e) => {
+          console.log('照片点击事件触发');
+          loadHighResImage(e);
+        }}
         ref={meshRef}
       >
         <planeGeometry args={[0.9, 0.9]} />
@@ -342,9 +354,6 @@ const TreeSystem: React.FC = () => {
         // 重新计算是否点到了照片 (为了避免误触关闭)
         // 但根据需求"单指照片可以精准选中并关闭了"，说明用户希望点击照片也能关闭?
         // 现在的逻辑是: 如果有点到照片 -> 切换; 如果没点到 -> 关闭
-
-        // 让我们简化逻辑: 只要过了2秒，点击任何地方都尝试关闭或切换
-        // 但为了防止误触，我们还是检测一下
 
         // ... (保持原有检测逻辑，但增加关闭逻辑)
       }
