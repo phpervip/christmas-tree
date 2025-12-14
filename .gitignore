@@ -24,11 +24,11 @@ dist-ssr
 *.sw?
 
 # Personal photos and media files
-public/photos/*.jpg
-public/photos/*.jpeg
-public/photos/*.png
-public/photos/*.gif
-public/photos/tmp/
+# public/photos/*.jpg
+# public/photos/*.jpeg
+# public/photos/*.png
+# public/photos/*.gif
+# public/photos/tmp/
 
 # Keep README for documentation
 !public/photos/README.md
