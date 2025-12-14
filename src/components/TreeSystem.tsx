@@ -57,6 +57,8 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
   const [loadStatus, setLoadStatus] = useState<'pending' | 'loading' | 'loaded' | 'highres'>('pending');
   const [isHighRes, setIsHighRes] = useState(false);
+  const meshRef = useRef<THREE.Mesh>(null);
+  const { setSelectedPhotoUrl } = useContext(TreeContext) as TreeContextType;
 
   // 生成缩略图URL
   const generateThumbUrl = (originalUrl: string) => {
@@ -113,7 +115,10 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
   }, [url, id, shouldLoad, loadStatus]);
 
   // 加载高清图片的函数
-  const loadHighResImage = () => {
+  const loadHighResImage = (event: THREE.Event) => {
+    // 阻止事件冒泡，避免触发全局点击处理
+    (event as any).stopPropagation();
+    
     if (isHighRes || loadStatus !== 'loaded') return;
 
     const loader = new THREE.TextureLoader();
@@ -128,6 +133,12 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         setLoadStatus('highres');
         setIsHighRes(true);
         console.log(`✅ Successfully loaded high resolution image: ${url}`);
+        
+        // 在移动端，直接设置选中的照片URL以显示模态框
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+          setSelectedPhotoUrl(url);
+        }
       },
       undefined,
       (error) => {
@@ -137,7 +148,7 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
   };
 
   return (
-    <group position={position} rotation={rotation} scale={scale * 1.2} onClick={loadHighResImage}>
+    <group position={position} rotation={rotation} scale={scale * 1.2}>
       {/* 相框边框 - 白色边框 */}
       <mesh position={[0, 0, 0]} userData={{ photoId: id, photoUrl: url }}>
         <boxGeometry args={[1, 1.25, 0.02]} />
@@ -148,7 +159,12 @@ const PolaroidPhoto: React.FC<{ url: string; position: THREE.Vector3; rotation: 
         />
       </mesh>
       {/* 照片内容 - 方案1: meshStandardMaterial */}
-      <mesh position={[0, 0.15, 0.015]} userData={{ photoId: id, photoUrl: url }}>
+      <mesh 
+        position={[0, 0.15, 0.015]} 
+        userData={{ photoId: id, photoUrl: url }}
+        onClick={loadHighResImage}
+        ref={meshRef}
+      >
         <planeGeometry args={[0.9, 0.9]} />
         {texture ? (
           <meshStandardMaterial
