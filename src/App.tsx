@@ -3,6 +3,7 @@ import { TreeContextType, AppState, TreeContext, PointerCoords } from './types';
 import Experience from './components/Experience';
 import GestureInput from './components/GestureInput';
 import TechEffects from './components/TechEffects';
+import BackgroundMusic from './components/BackgroundMusic';
 import { AnimatePresence, motion } from 'framer-motion';
 
 // 语言上下文
@@ -348,7 +349,7 @@ const AppContent: React.FC = () => {
                         href="https://tech.xiuxinwenhua.com/" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-center cinzel text-lg text-blue-300 hover:text-blue-100 underline"
+                        className="text-center cinzel text-lg text-blue-300 hover:text-blue-100"
                     >
                         {getText('关于', 'About us', 'Hakkımızda')}
                     </a>
@@ -385,6 +386,9 @@ const AppContent: React.FC = () => {
             {/* 光标层 (z-200) */}
             <DreamyCursor pointer={pointer} progress={hoverProgress} />
 
+            {/* 背景音乐控件 */}
+            <BackgroundMusic />
+            
             {/* 弹窗层 (z-100) */}
             <AnimatePresence>
                 {selectedPhotoUrl && <PhotoModal url={selectedPhotoUrl} onClose={() => setSelectedPhotoUrl(null)} />}
