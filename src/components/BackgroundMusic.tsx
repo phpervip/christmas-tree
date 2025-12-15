@@ -81,7 +81,7 @@ const BackgroundMusic: React.FC = () => {
       <div className="fixed top-3/4 left-2 transform -translate-y-1/2 z-50 bg-black/30 backdrop-blur-sm rounded-full p-1 flex flex-col items-center gap-2">
         <button
           onClick={togglePlay}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-yellow-500 text-white hover:scale-105 transition-transform"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-yellow-500 text-white hover:scale-105 transition-transform"
           aria-label={isPlaying ? "Pause music" : "Play music"}
         >
           {isPlaying ? (

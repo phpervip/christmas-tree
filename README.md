@@ -108,7 +108,7 @@ christmas-tree/
 ## 📸 添加照片
 
 1. 将照片放入 `public/photos/` 目录
-2. 照片命名格式：`YYYY_MM_序号.jpg`（例如：`2024_12_1.jpg`）
+2. 照片命名格式：`YYYY_MM_序号.jpg`（例如：`2026_12_1.jpg`）
 3. 照片会自动按时间排序并在树上显示
 
 > 注意：`public/photos/` 目录下的照片不会被提交到 Git 仓库

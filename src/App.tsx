@@ -5,6 +5,7 @@ import GestureInput from './components/GestureInput';
 import TechEffects from './components/TechEffects';
 import BackgroundMusic from './components/BackgroundMusic';
 import { AnimatePresence, motion } from 'framer-motion';
+import { getRandomLawOfAttractionPhrase } from './constants/phrases';
 
 // 语言上下文
 type Language = 'zh' | 'en' | 'tr';
@@ -216,7 +217,13 @@ const BlessingForm: React.FC = () => {
 
 // --- 照片弹窗 ---
 const PhotoModal: React.FC<{ url: string | null, onClose: () => void }> = ({ url, onClose }) => {
+    const { language } = useContext(LanguageContext);
+    
     if (!url) return null;
+    
+    // 获取当前语言的随机短语
+    const randomPhrase = getRandomLawOfAttractionPhrase(language);
+    
     return (
         <motion.div
             id="photo-modal-backdrop"
@@ -234,7 +241,7 @@ const PhotoModal: React.FC<{ url: string | null, onClose: () => void }> = ({ url
             >
                 <img src={url} alt="Memory" className="max-h-[80vh] object-contain rounded shadow-inner" />
                 <div className="absolute -bottom-12 w-full text-center text-red-300/70 cinzel text-sm">
-                    ❄️ Best Wishes ❄️ Tap to close
+                    ❄️ {randomPhrase} ❄️ {language === 'zh' ? '' : language === 'en' ? '' : ''}
                 </div>
             </motion.div>
         </motion.div>
@@ -309,8 +316,8 @@ const AppContent: React.FC = () => {
                         <p className="text-orange-400/80 cinzel tracking-widest text-lg md:text-2xl mt-2">
                             {state === 'CHAOS' ? 
                                 (toParam || fromParam ? 
-                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('愿你和你所爱的所有人平安健康、有爱、有福、有光。', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
-                                    getText('✨ 亲爱的朋友 // 愿你和你所爱的所有人平安健康、有爱、有福、有光 ✨', '✨ DEAR FRIEND // WISHING YOU ALL THE BEST ✨', '✨ SEVGİLİ ARKADAŞ // SİZE EN İYİLERİNİ DİLERİM ✨')) : 
+                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('愿你和你所爱的所有人平安健康、有爱、有福、有光！', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
+                                    getText('✨ 亲爱的朋友 // 愿你和你所爱的所有人平安健康、有爱、有福、有光！ ✨', '✨ DEAR FRIEND // WISHING YOU ALL THE BEST ✨', '✨ SEVGİLİ ARKADAŞ // SİZE EN İYİLERİNİ DİLERİM ✨')) : 
                                 (toParam || fromParam ? 
                                     `🎁 ${getText('幸福树', 'HAPPY TREE', 'NEŞELİ AĞAÇ')}${toParam ? ` to ${toParam}` : ''} // ${getText('健康和平富足', 'HEALTH PEACE PROSPERITY', 'SAĞLIK BARIŞ RefAH')}${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
                                     getText('🎁 幸福树 // 健康、平安、富足、繁荣 🎁', '🎁 HAPPY TREE // HEALTH PEACE PROSPERITY 🎁', '🎁 NEŞELİ AĞAÇ // SAĞLIK BARIŞ RefAH 🎁'))}
@@ -327,7 +334,7 @@ const AppContent: React.FC = () => {
                         </button>
                         
                         {/* 下拉菜单 */}
-                        <div className="absolute right-0 mt-2 w-20 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50 pointer-events-auto">
+                        <div className="absolute right-0 w-20 bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg py-2 hidden group-hover:block z-50 pointer-events-auto">
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
