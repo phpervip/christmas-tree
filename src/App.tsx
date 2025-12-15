@@ -290,7 +290,7 @@ const AppContent: React.FC = () => {
 
             {/* 3D 场景层 (z-10) */}
             <div className="absolute inset-0 z-10">
-                <Suspense fallback={<div className="flex items-center justify-center h-full text-red-400 cinzel animate-pulse text-2xl">🎄 Loading Christmas Magic... ❄️</div>}>
+                <Suspense fallback={<div className="flex items-center justify-center h-full text-red-400 cinzel animate-pulse text-2xl">🎄 Loading Magic... ❄️</div>}>
                     <Experience />
                 </Suspense>
             </div>
@@ -305,14 +305,14 @@ const AppContent: React.FC = () => {
                         <h1 className="text-4xl md:text-6xl font-bold cinzel text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-green-200 to-amber-100 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
                             🎄 {getText('祝福', 'BEAUTIFUL WISHES', 'En İçten Dileklerimle')} ❄️
                         </h1>
-                        <p className="text-red-400/80 cinzel tracking-widest text-sm mt-2">
+                        <p className="text-orange-400/80 cinzel tracking-widest text-lg md:text-2xl mt-2">
                             {state === 'CHAOS' ? 
                                 (toParam || fromParam ? 
-                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('最好的祝福', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
-                                    getText('✨ 亲爱的朋友 // 最好的祝福 ✨', '✨ DEAR FRIEND // WISHING YOU ALL THE BEST ✨', '✨ SEVGİLİ ARKADAŞ // SİZE EN İYİLERİNİ DİLERİM ✨')) : 
+                                    `✨ ${getText('亲爱的朋友', 'DEAR FRIEND', 'SEVGİLİ ARKADAŞ')} ${toParam ? ` ${toParam}` : ''} // ${getText('愿你和你所爱的所有人平安健康、有爱、有福、有光。', 'WISHING YOU ALL THE BEST', 'SİZE EN İYİLERİNİ DİLERİM')}${fromParam ? ` from ${fromParam}` : ''} ✨` : 
+                                    getText('✨ 亲爱的朋友 // 愿你和你所爱的所有人平安健康、有爱、有福、有光 ✨', '✨ DEAR FRIEND // WISHING YOU ALL THE BEST ✨', '✨ SEVGİLİ ARKADAŞ // SİZE EN İYİLERİNİ DİLERİM ✨')) : 
                                 (toParam || fromParam ? 
-                                    `🎁 ${getText('幸福树', 'HAPPY TREE', 'NEŞELİ AĞAÇ')}${toParam ? ` to ${toParam}` : ''} // ${getText('健康和平繁荣', 'HEALTH PEACE PROSPERITY', 'SAĞLIK BARIŞ RefAH')}${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
-                                    getText('🎁 幸福树 // 健康平安丰盛 🎁', '🎁 HAPPY TREE // HEALTH PEACE PROSPERITY 🎁', '🎁 NEŞELİ AĞAÇ // SAĞLIK BARIŞ RefAH 🎁'))}
+                                    `🎁 ${getText('幸福树', 'HAPPY TREE', 'NEŞELİ AĞAÇ')}${toParam ? ` to ${toParam}` : ''} // ${getText('健康和平富足', 'HEALTH PEACE PROSPERITY', 'SAĞLIK BARIŞ RefAH')}${fromParam ? ` from ${fromParam}` : ''} 🎁` : 
+                                    getText('🎁 幸福树 // 健康、平安、富足、繁荣 🎁', '🎁 HAPPY TREE // HEALTH PEACE PROSPERITY 🎁', '🎁 NEŞELİ AĞAÇ // SAĞLIK BARIŞ RefAH 🎁'))}
                         </p>
                     </div>
                     
@@ -350,7 +350,7 @@ const AppContent: React.FC = () => {
                         rel="noopener noreferrer"
                         className="text-center cinzel text-lg text-blue-300 hover:text-blue-100 underline"
                     >
-                        {getText('合作', 'Cooperation', 'İş Birliği')}
+                        {getText('关于', 'About us', 'Hakkımızda')}
                     </a>
                 </div>
             </div>
@@ -364,17 +364,17 @@ const AppContent: React.FC = () => {
                     <div className="text-center cursor-pointer pointer-events-auto">
                         <p className="text-3xl md:text-4xl cinzel text-yellow-300 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)] animate-pulse">
                             {getText(
-                                `🎉 这是一份来自 ${fromParam} 的祝福 🎉`,
-                                `🎉 This is a blessing from ${fromParam} 🎉`,
-                                `🎉 Bu ${fromParam} tarafından gelen bir dilektir 🎉`
-                            )}
+                                `🎉 送给 ${toParam} 的祝福 来自 ${fromParam}  🎉`,
+                                `🎉 A blessing to ${toParam} from ${fromParam} 🎉`,
+                                `🎉 ${fromParam}'dan ${toParam}'a hayırlı dilekler gönderildi 🎉`
+                            )}  
                         </p>
-                        <button 
+                        {/* <button 
                             className="mt-6 px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 text-white text-lg rounded-full hover:from-red-600 hover:to-green-600 transition-all duration-300 transform hover:scale-105"
                             onClick={() => setShowBlessingMessage(false)}
                         >
                             {getText('收到', 'Received', 'Alındı')}
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             )}

@@ -444,7 +444,7 @@ const GestureInput: React.FC = () => {
 
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center text-2xl text-emerald-500 animate-pulse bg-black/90 z-20 cinzel">
-          SYSTEM INITIALIZING...
+          JUST BEGINNING ...
         </div>
       )}
     </div>
